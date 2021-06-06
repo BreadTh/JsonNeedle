@@ -1,0 +1,1 @@
+A small tool to make heads and tails of related json data. Load in a bunch of json and enter two values. The tool will search for a way to transverse the seperate pieces json to get from one value to the other. See the sample project for an example. 
