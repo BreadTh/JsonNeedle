@@ -7,7 +7,7 @@ namespace JsonNeedle
 {
     public class Haystack
     {
-        public List<Step> FindConnection(List<NodeSet> nodeSets, string from, string to) 
+        public List<Step> FindConnection(List<NodeSet> nodeSets, string from, string to, Func<string, bool> isValidSearchProperty) 
         {
             var unconnectedNodes = new Queue<Node>();
             var edges = new Queue<Step>();
@@ -65,7 +65,7 @@ namespace JsonNeedle
                             {
                                 if(edgeSpace.ToString() == to)
                                     results.Add(edge);
-                                else
+                                else if (isValidSearchProperty(edgeSpace.ToString()))
                                     edgeLinks[edgeSpace.ToString()] = edge;
                             }
                         }

@@ -19,7 +19,10 @@ namespace JsonNeedle.Sample
 
             Console.WriteLine("Connecting data...");
             var haystack = new Haystack();
-            var connectionEnds = haystack.FindConnection(data, from, to);
+            var connectionEnds = haystack.FindConnection(data, from, to, (candidate) => 
+                Guid.TryParse(candidate, out Guid _) && //We know that all relations are guids. This avoids relating Alice and John by their age.
+                candidate != "7b3fa199-57fe-4617-a806-b1b7a1a061b1" //At a previous run we saw the algorithm transverse via the HR person's ID, but not actually through the HR person. We don't want that.
+            );
 
             Console.WriteLine("Printing data...");
             haystack.PrintFirst(connectionEnds, to);
@@ -29,9 +32,9 @@ namespace JsonNeedle.Sample
         {
             var employees = new List<object>()
             {
-                new { reference = "115f08e4-65cf-4490-ab79-16bf0b8b8784", person = new { names = new List<object>(){"John", "Doe"} } },
+                new { reference = "115f08e4-65cf-4490-ab79-16bf0b8b8784", person = new { names = new List<object>(){"John", "Doe"}, age = 32 } },
                 new { id = "a67c5fa9-0300-47e8-b61f-092de322e1e3", name = "Jane Doe" },
-                new { id = "d6f3a810-53c4-4be6-af31-e56ad4be18d3", person = new { names = new List<object>(){"Alice", "Alison"}, extra = "Is great." } },
+                new { id = "d6f3a810-53c4-4be6-af31-e56ad4be18d3", person = new { names = new List<object>(){"Alice", "Alison"}, extra = "Is great.", age = 32 } },
                 new { id = "3b143085-f880-4310-9e74-c59e3a5dd563", name = "Bob" },
             };
 
